@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IUserService } from './interfaces/IUserService';
 import { IUser } from './interfaces/IUser';
 import { User } from './user.entity';
+import { Model } from 'sequelize-typescript';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -14,12 +15,12 @@ export class UserService implements IUserService {
     return await this.UserRepository.findAll<User>(options);
   }
 
-  public async findById(id: number): Promise<User | null> {
-    return await this.UserRepository.findById<User>(id);
-  }
-
   public async findOne(options: object): Promise<User | null> {
     return await this.UserRepository.findOne<User>(options);
+  }
+
+  public async findById(id: number): Promise<User | null> {
+    return await this.UserRepository.findById<User>(id);
   }
 
   public async create(user: IUser): Promise<User> {
@@ -38,6 +39,7 @@ export class UserService implements IUserService {
         throw new Error('The user was not found.');
       }
 
+      user = this._assign(user, newValue);
       return await user.save({
         returning: true,
         transaction,
@@ -52,5 +54,18 @@ export class UserService implements IUserService {
         transaction,
       });
     });
+  }
+
+  public _assign<T extends Model<T> = any, U = {}>(model: T, newModel: U): T {
+    for (const key of Object.keys(model.dataValues)) {
+      if (!newModel[key]) {
+        continue;
+      }
+      if (model[key] !== newModel[key]) {
+        model[key] = newModel[key];
+      }
+    }
+
+    return model;
   }
 }
