@@ -17,7 +17,8 @@
     "prefer-const": false,
     "only-arrow-functions": false,
     "no-console": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "eofline": false
   },
   "rulesDirectory": []
 }
