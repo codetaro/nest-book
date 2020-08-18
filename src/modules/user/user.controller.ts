@@ -24,9 +24,9 @@ export class UserController {
     return res.status(HttpStatus.CREATED).send();
   }
 
-  @Get('users/:id')
+  @Get('users/:userId')
   @UseGuards(CheckLoggedInUserGuard)
-  public async show(@Param() id: number, @Res() res) {
+  public async show(@Param('userId') id: number, @Res() res) {
     if (!id) {
       throw new Error('Missing id.');
     }

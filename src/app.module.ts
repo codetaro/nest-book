@@ -8,7 +8,8 @@ import { AuthenticationMiddleware } from './shared/middlewares/authentication.mi
 @Module({
   imports: [
     DatabaseModule,
-    AuthenticationModule.forRoot('jwt'),
+    // AuthenticationModule.forRoot('jwt'),
+    AuthenticationModule,
     UserModule,
   ],
   controllers: [],

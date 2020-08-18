@@ -11,7 +11,7 @@ export async function up(sequelize) {
     "birthday"  timestamp,
     "createdAt" timestamp                 not null,
     "updatedAt" timestamp                 not null,
-    "deletedAt" timestamp                 not null
+    "deletedAt" timestamp
 );
   `);
 

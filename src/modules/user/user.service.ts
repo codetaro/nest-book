@@ -20,7 +20,7 @@ export class UserService implements IUserService {
   }
 
   public async findById(id: number): Promise<User | null> {
-    return await this.UserRepository.findById<User>(id);
+    return await this.UserRepository.findByPk<User>(id);
   }
 
   public async create(user: IUser): Promise<User> {
