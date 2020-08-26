@@ -18,7 +18,8 @@
     "only-arrow-functions": false,
     "no-console": false,
     "trailing-comma": false,
-    "eofline": false
+    "eofline": false,
+    "variable-name": false
   },
   "rulesDirectory": []
 }

@@ -22,8 +22,8 @@ export class AuthenticationController {
       where: {
         email: body.email,
         password: crypto.createHmac('sha256', body.password)
-          .digest('hex')
-      }
+          .digest('hex'),
+      },
     });
     if (!user) {
       return res.status(HttpStatus.NOT_FOUND)

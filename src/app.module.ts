@@ -4,13 +4,17 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 import { UserModule } from './modules/user/user.module';
 import { strategy } from './shared/config/passport-strategy.config';
 import { AuthenticationMiddleware } from './shared/middlewares/authentication.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EntryModule } from './modules/entry/entry.module';
 
 @Module({
   imports: [
     DatabaseModule,
+    TypeOrmModule.forRoot(),
     // AuthenticationModule.forRoot('jwt'),
     AuthenticationModule,
     UserModule,
+    EntryModule,
   ],
   controllers: [],
   providers: [],
