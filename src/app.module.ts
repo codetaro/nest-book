@@ -6,11 +6,13 @@ import { strategy } from './shared/config/passport-strategy.config';
 import { AuthenticationMiddleware } from './shared/middlewares/authentication.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntryModule } from './modules/entry/entry.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     DatabaseModule,
     TypeOrmModule.forRoot(),
+    MongooseModule.forRoot('mongodb://localhost/nestbook'),
     // AuthenticationModule.forRoot('jwt'),
     AuthenticationModule,
     UserModule,
