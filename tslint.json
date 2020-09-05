@@ -19,7 +19,8 @@
     "no-console": false,
     "trailing-comma": false,
     "eofline": false,
-    "variable-name": false
+    "variable-name": false,
+    "curly": false
   },
   "rulesDirectory": []
 }

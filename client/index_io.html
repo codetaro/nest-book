@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="socket.io.js"></script>
+    <script>
+      const socket = io('http://localhost:3000',  {
+        query: 'auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQHRlc3QuZnIiLCJpYXQiOjE1MjQ5NDk3NTgsImV4cCI6MTUyNDk1MzM1OH0.QH_jhOWKockuV-w-vIKMgT_eLJb3dp6aByDbMvEY5xc'
+      });
+
+      socket.on('connect', function() {
+        socket.emit('showUser', { userId: 1 });
+        socket.emit('indexComment', { entryId: 'e9950fe8-74fe-4562-a1cc-b7d11d1445ae' });
+        socket.emit('showComment', { entryId: 'e9950fe8-74fe-4562-a1cc-b7d11d1445ae', commentId: '4ca79005-a5ab-4995-93b1-5cf7a917a5d2' });
+      });
+
+      socket.on('indexComment', function(data) {
+        console.log('indexComment', data);
+      });
+      socket.on('showComment', function(data) {
+        console.log('showComment', data);
+      });
+      socket.on('showUser', function(data) {
+        console.log('showUser', data);
+      });
+      socket.on('exception', function(data) {
+        console.log('exception', data);
+      });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

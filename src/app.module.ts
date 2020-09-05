@@ -7,29 +7,37 @@ import { AuthenticationMiddleware } from './shared/middlewares/authentication.mi
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntryModule } from './modules/entry/entry.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CommentGatewayModule } from './gateways/comment/comment.gateway.module';
+import { UserGatewayModule } from './gateways/user/user.gateway.module';
+import { CommentGateway } from './gateways/comment/comment.gateway';
+import { UserGateway } from './gateways/user/user.gateway';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
-    DatabaseModule,
-    TypeOrmModule.forRoot(),
-    MongooseModule.forRoot('mongodb://localhost/nestbook'),
-    // AuthenticationModule.forRoot('jwt'),
-    AuthenticationModule,
-    UserModule,
-    EntryModule,
+    // DatabaseModule,
+    // TypeOrmModule.forRoot(),
+    // MongooseModule.forRoot('mongodb://localhost/nestbook'),
+    // // AuthenticationModule.forRoot('jwt'),
+    // AuthenticationModule,
+    // UserModule,
+    // EntryModule,
+    // UserGatewayModule,
+    // CommentGatewayModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [AppGateway],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): any {
-    consumer.apply(AuthenticationMiddleware)
-      .with(strategy)
-      .forRoutes(
-        { path: '/users', method: RequestMethod.GET },
-        { path: '/users/:id', method: RequestMethod.GET },
-        { path: '/users/:id', method: RequestMethod.PUT },
-        { path: '/users/:id', method: RequestMethod.DELETE },
-      );
-  }
+export class AppModule {
+// export class AppModule implements NestModule {
+  // configure(consumer: MiddlewareConsumer): any {
+  //   consumer.apply(AuthenticationMiddleware)
+  //     .with(strategy)
+  //     .forRoutes(
+  //       { path: '/users', method: RequestMethod.GET },
+  //       { path: '/users/:id', method: RequestMethod.GET },
+  //       { path: '/users/:id', method: RequestMethod.PUT },
+  //       { path: '/users/:id', method: RequestMethod.DELETE },
+  //     );
+  // }
 }

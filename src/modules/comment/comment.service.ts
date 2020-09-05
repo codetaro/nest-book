@@ -10,8 +10,12 @@ export class CommentService {
   ) {
   }
 
-  findAll() {
-    return this.commentRepository.find();
+  public async findAll(options?: object): Promise<Comment[]> {
+    return await this.commentRepository.find(options);
+  }
+
+  public async findOne(options?: object): Promise<Comment | null> {
+    return await this.commentRepository.findOne(options);
   }
 
   findOneById(id: string) {
