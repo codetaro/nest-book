@@ -4,7 +4,9 @@ import { WsAuthenticationGatewayMiddleware } from '../../shared/middlewares/ws-a
 import { Logger } from '@nestjs/common';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  middlewares: [AuthenticationGatewayMiddleware]
+})
 export class UserGateway implements OnGatewayInit {
   @WebSocketServer() server: Server;
 

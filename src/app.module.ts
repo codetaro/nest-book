@@ -15,29 +15,30 @@ import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
-    // DatabaseModule,
-    // TypeOrmModule.forRoot(),
-    // MongooseModule.forRoot('mongodb://localhost/nestbook'),
-    // // AuthenticationModule.forRoot('jwt'),
-    // AuthenticationModule,
-    // UserModule,
-    // EntryModule,
-    // UserGatewayModule,
-    // CommentGatewayModule,
+    DatabaseModule,
+    TypeOrmModule.forRoot(),
+    MongooseModule.forRoot('mongodb://localhost/nestbook'),
+    // AuthenticationModule.forRoot('jwt'),
+    AuthenticationModule,
+    UserModule,
+    EntryModule,
+    UserGatewayModule,
+    CommentGatewayModule,
   ],
   controllers: [],
-  providers: [AppGateway],
+  providers: [
+    // AppGateway
+  ],
 })
-export class AppModule {
-// export class AppModule implements NestModule {
-  // configure(consumer: MiddlewareConsumer): any {
-  //   consumer.apply(AuthenticationMiddleware)
-  //     .with(strategy)
-  //     .forRoutes(
-  //       { path: '/users', method: RequestMethod.GET },
-  //       { path: '/users/:id', method: RequestMethod.GET },
-  //       { path: '/users/:id', method: RequestMethod.PUT },
-  //       { path: '/users/:id', method: RequestMethod.DELETE },
-  //     );
-  // }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(AuthenticationMiddleware)
+      .with(strategy)
+      .forRoutes(
+        { path: '/users', method: RequestMethod.GET },
+        { path: '/users/:id', method: RequestMethod.GET },
+        { path: '/users/:id', method: RequestMethod.PUT },
+        { path: '/users/:id', method: RequestMethod.DELETE },
+      );
+  }
 }

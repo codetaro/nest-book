@@ -1,6 +1,6 @@
-import * as passport from 'passport';
 import { HttpStatus, Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 import { UserService } from '../../modules/user/user.service';
+import * as passport from 'passport';
 
 @Injectable()
 export class AuthenticationMiddleware implements NestMiddleware {
