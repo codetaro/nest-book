@@ -20,7 +20,8 @@
     "trailing-comma": false,
     "eofline": false,
     "variable-name": false,
-    "curly": false
+    "curly": false,
+    "no-unused-expression": false
   },
   "rulesDirectory": []
 }

@@ -16,14 +16,16 @@ import { AppGateway } from './app.gateway';
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+      keepConnectionAlive: true,
+    }),
     MongooseModule.forRoot('mongodb://localhost/nestbook'),
     // AuthenticationModule.forRoot('jwt'),
     AuthenticationModule,
     UserModule,
     EntryModule,
-    UserGatewayModule,
-    CommentGatewayModule,
+    // UserGatewayModule,
+    // CommentGatewayModule,
   ],
   controllers: [],
   providers: [
@@ -36,9 +38,9 @@ export class AppModule implements NestModule {
       .with(strategy)
       .forRoutes(
         { path: '/users', method: RequestMethod.GET },
-        { path: '/users/:id', method: RequestMethod.GET },
-        { path: '/users/:id', method: RequestMethod.PUT },
-        { path: '/users/:id', method: RequestMethod.DELETE },
+        { path: '/users/:userId', method: RequestMethod.GET },
+        { path: '/users/:userId', method: RequestMethod.PUT },
+        { path: '/users/:userId', method: RequestMethod.DELETE },
       );
   }
 }
