@@ -21,7 +21,8 @@
     "eofline": false,
     "variable-name": false,
     "curly": false,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "no-empty": false
   },
   "rulesDirectory": []
 }

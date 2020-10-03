@@ -1,9 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res } from '@nestjs/common';
 import { EntryService } from './entry.service';
 import { Entry } from './entry.entity';
-import { Comment } from '../comment/comment.entity';
 import { CommentService } from '../comment/comment.service';
-import { EntryMetadata } from './entry_metadata.entity';
+import { Request, Response } from 'express';
 
 @Controller('entry')
 export class EntryController {
@@ -13,20 +12,22 @@ export class EntryController {
   }
 
   @Get()
-  findAll() {
-    return this.entryService.findAll();
+  async index(@Req() req: Request, @Res() res: Response) {
+    const entries: Entry[] = await this.entryService.findAll();
+    return res.status(HttpStatus.OK).json(entries);
   }
 
   @Get(':entryId')
-  findOneById(@Param('entryId') entryId) {
-    return this.entryService.findOneById(entryId);
+  async show(@Param('entryId') entryId) {
+    const entry: Entry = await this.entryService.findOneById(entryId);
+    return entry;
   }
 
   @Post()
-  async create(@Body() input: { entry: Entry, comments: Comment[], metadata: EntryMetadata }) {
-    const { entry, comments, metadata } = input;
-    entry.comments = comments;
-    entry.metadata = metadata;
-    return this.entryService.create(entry);
+  create(@Body() body: Entry) {
+    if (Object.keys(body).length === 0) {
+      throw new HttpException('Entry required', HttpStatus.BAD_REQUEST);
+    }
+    this.entryService.create(body);
   }
 }

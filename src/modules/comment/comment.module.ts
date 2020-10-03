@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from './comment.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommentSchema } from './schemas/comment.schema';
+import { CommentController } from './comment.controller';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CommentSchema } from './schemas/comment.schema';
   ],
   providers: [CommentService],
   exports: [CommentService],
+  controllers: [CommentController],
 })
 export class CommentModule {
 }

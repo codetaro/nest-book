@@ -4,6 +4,8 @@ import { microserviceConfig } from './shared/config/microservice.config';
 import { RpcValidationFilter } from './shared/filters/rpcValidation.filter';
 import * as cluster from 'cluster';
 import * as os from 'os';
+import { SwaggerModule } from '@nestjs/swagger';
+import { swaggerOptions } from './shared/config/swagger.config';
 
 async function bootstrapApp() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +14,10 @@ async function bootstrapApp() {
 
   // app.connectMicroservice(microserviceConfig);
   // await app.startAllMicroservicesAsync();
+
+  const document = SwaggerModule.createDocument(app, swaggerOptions);
+  SwaggerModule.setup('/swagger', app, document);
+
   await app.listen(process.env.PORT || 3000);
 }
 
