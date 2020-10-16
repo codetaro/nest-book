@@ -1,33 +1,96 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { EntryService } from './entry.service';
-import { Entry } from './entry.entity';
 import { CommentService } from '../comment/comment.service';
-import { Request, Response } from 'express';
+import { CommandBus } from '@nestjs/cqrs';
+import { IUser } from '../user/interfaces/IUser';
+import { User } from '../../shared/decorators/user.decorator';
+import { CreateEntryCommand } from './commands/impl/createEntry.command';
+import { Entry } from '../../shared/decorators/entry.decorator';
+import { IEntry } from './interfaces/IEntry';
+import { UpdateEntryCommand } from './commands/impl/updateEntry.command';
+import { DeleteEntryCommand } from './commands/impl/deleteEntry.command';
 
-@Controller('entry')
+@Controller()
 export class EntryController {
   constructor(
     private readonly entryService: EntryService,
-    private readonly commentService: CommentService) {
+    private readonly commentService: CommentService,
+    private readonly commandBus: CommandBus,
+  ) {
   }
 
-  @Get()
-  async index(@Req() req: Request, @Res() res: Response) {
-    const entries: Entry[] = await this.entryService.findAll();
+  @Post('entries')
+  public async create(@User() user: IUser, @Body() body: any, @Res() res) {
+    if (!body || (body && Object.keys(body).length === 0)) {
+      return res.status(HttpStatus.BAD_REQUEST).send('Missing some information.');
+    }
+
+    const error = await this.commandBus.execute(new CreateEntryCommand(
+      body.title,
+      body.content,
+      body.keywords,
+      user.id,
+    ));
+
+    if (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    } else {
+      return res.status(HttpStatus.CREATED).send();
+    }
+  }
+
+  @Get('entries')
+  public async index(@User() user: IUser, @Res() res) {
+    const entries = await this.entryService.findAll();
     return res.status(HttpStatus.OK).json(entries);
   }
 
-  @Get(':entryId')
-  async show(@Param('entryId') entryId) {
-    const entry: Entry = await this.entryService.findOneById(entryId);
-    return entry;
+  @Get('entries/:entryId')
+  public async show(@User() user: IUser, @Entry() entry: IEntry, @Res() res) {
+    return res.status(HttpStatus.OK).json(entry);
   }
 
-  @Post()
-  create(@Body() body: Entry) {
-    if (Object.keys(body).length === 0) {
-      throw new HttpException('Entry required', HttpStatus.BAD_REQUEST);
+  @Put('entries/:entryId')
+  public async update(
+    @User() user: IUser,
+    @Entry() entry: IEntry,
+    @Param('entryId') entryId: number,
+    @Body() body: any,
+    @Res() res) {
+    if (user.id !== entry.userId) {
+      return res.status(HttpStatus.NOT_FOUND).send('Unable to find the entry.');
     }
-    this.entryService.create(body);
+
+    const error = await this.commandBus.execute(new UpdateEntryCommand(
+      entryId,
+      body.title,
+      body.content,
+      body.keywords,
+      user.id,
+    ));
+
+    if (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    } else {
+      return res.status(HttpStatus.OK).send();
+    }
+  }
+
+  @Delete('entries/:entryId')
+  public async delete(
+    @User() user: IUser, @Entry() entry: IEntry,
+    @Param('entryId') entryId: number,
+    @Body() body: any, @Res() res,
+  ) {
+    if (user.id !== entry.userId) {
+      return res.status(HttpStatus.NOT_FOUND).send('Unable to find the entry.');
+    }
+
+    const error = await this.commandBus.execute(new DeleteEntryCommand(entryId));
+    if (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
+    } else {
+      return res.status(HttpStatus.OK).send();
+    }
   }
 }

@@ -7,11 +7,8 @@ import { AuthenticationMiddleware } from './shared/middlewares/authentication.mi
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntryModule } from './modules/entry/entry.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CommentGatewayModule } from './gateways/comment/comment.gateway.module';
-import { UserGatewayModule } from './gateways/user/user.gateway.module';
-import { CommentGateway } from './gateways/comment/comment.gateway';
-import { UserGateway } from './gateways/user/user.gateway';
-import { AppGateway } from './app.gateway';
+import { EntryController } from './modules/entry/entry.controller';
+import { KeywordModule } from './modules/keyword/keyword.module';
 
 @Module({
   imports: [
@@ -26,6 +23,7 @@ import { AppGateway } from './app.gateway';
     EntryModule,
     // UserGatewayModule,
     // CommentGatewayModule,
+    KeywordModule
   ],
   controllers: [],
   providers: [
@@ -34,13 +32,19 @@ import { AppGateway } from './app.gateway';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    consumer.apply(AuthenticationMiddleware)
+    const userControllerAuthenticatedRoutes = [
+      { path: '/users', method: RequestMethod.GET },
+      { path: '/users/:userId', method: RequestMethod.GET },
+      { path: '/users/:userId', method: RequestMethod.PUT },
+      { path: '/users/:userId', method: RequestMethod.DELETE },
+    ];
+
+    consumer
+      .apply(AuthenticationMiddleware)
       .with(strategy)
       .forRoutes(
-        { path: '/users', method: RequestMethod.GET },
-        { path: '/users/:userId', method: RequestMethod.GET },
-        { path: '/users/:userId', method: RequestMethod.PUT },
-        { path: '/users/:userId', method: RequestMethod.DELETE },
+        ...userControllerAuthenticatedRoutes,
+        EntryController,
       );
   }
 }

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Entry } from './interfaces/entry.interface';
+import { IEntry } from './interfaces/entry.interface';
 import { Model, Types } from 'mongoose';
 import { Comment } from '../comment/interfaces/comment.interface';
 
 @Injectable()
 export class EntriesService {
   constructor(
-    @InjectModel('Entry') private readonly entryModel: Model<Entry>,
+    @InjectModel('Entry') private readonly entryModel: Model<IEntry>,
     @InjectModel('Comment') private readonly commentModel: Model<Comment>,
   ) {
   }

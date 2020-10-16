@@ -1,6 +1,19 @@
 import * as crypto from 'crypto';
-import { AutoIncrement, BeforeCreate, Column, CreatedAt, DataType, DeletedAt, Model, PrimaryKey, Table, UpdatedAt } from 'sequelize-typescript';
+import {
+  AutoIncrement,
+  BeforeCreate,
+  Column,
+  CreatedAt,
+  DataType,
+  DeletedAt,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+  UpdatedAt,
+} from 'sequelize-typescript';
 import { IDefineOptions } from 'sequelize-typescript/lib/interfaces/IDefineOptions';
+import { Entry } from '../entry/sequelize/entry.entity';
 
 const tableOptions: IDefineOptions = {
   timestamps: true,
@@ -62,6 +75,9 @@ export class User extends Model<User> {
 
   @DeletedAt
   public deletedAt: Date;
+
+  @HasMany(() => Entry)
+  public entries: Entry[];
 
   @BeforeCreate
   public static async hashPassword(user: User, options: any) {

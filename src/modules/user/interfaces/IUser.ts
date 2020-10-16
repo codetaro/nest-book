@@ -1,3 +1,5 @@
+import { Entry } from '../../entry/sequelize/entry.entity';
+
 export interface IUser {
   id?: number;
   firstName: string;
@@ -5,5 +7,5 @@ export interface IUser {
   email: string;
   password: string;
   birthday?: Date;
-  // entries?: Array<Entry>;
+  entries?: Entry[];
 }
