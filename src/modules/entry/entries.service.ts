@@ -2,20 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IEntry } from './interfaces/entry.interface';
 import { Model, Types } from 'mongoose';
-import { Comment } from '../comment/interfaces/comment.interface';
+import { IComment } from '../comment/interfaces/comment.interface';
 
 @Injectable()
 export class EntriesService {
   constructor(
-    @InjectModel('Entry') private readonly entryModel: Model<IEntry>,
-    @InjectModel('Comment') private readonly commentModel: Model<Comment>,
+    // @InjectModel('Entry') private readonly entryModel: Model<IEntry>,
+    // @InjectModel('Comment') private readonly commentModel: Model<IComment>,
   ) {
   }
 
   findAll() {
-    return this.entryModel.find().exec();
+    // return this.entryModel.find().exec();
   }
 
+/*
   // retrieve one entry by entry ID,
   // including its related documents with the "comments" reference
   findById(id: string) {
@@ -43,4 +44,5 @@ export class EntriesService {
 
     return { success: true };
   }
+*/
 }
