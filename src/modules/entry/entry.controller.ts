@@ -19,7 +19,7 @@ export class EntryController {
   ) {
   }
 
-  @Post('entries')
+  @Post('entry')
   public async create(@User() user: IUser, @Body() body: any, @Res() res) {
     if (!body || (body && Object.keys(body).length === 0)) {
       return res.status(HttpStatus.BAD_REQUEST).send('Missing some information.');
@@ -39,18 +39,18 @@ export class EntryController {
     }
   }
 
-  @Get('entries')
+  @Get('entry')
   public async index(@User() user: IUser, @Res() res) {
     const entries = await this.entryService.findAll();
     return res.status(HttpStatus.OK).json(entries);
   }
 
-  @Get('entries/:entryId')
+  @Get('entry/:entryId')
   public async show(@User() user: IUser, @Entry() entry: IEntry, @Res() res) {
     return res.status(HttpStatus.OK).json(entry);
   }
 
-  @Put('entries/:entryId')
+  @Put('entry/:entryId')
   public async update(
     @User() user: IUser,
     @Entry() entry: IEntry,
@@ -76,7 +76,7 @@ export class EntryController {
     }
   }
 
-  @Delete('entries/:entryId')
+  @Delete('entry/:entryId')
   public async delete(
     @User() user: IUser, @Entry() entry: IEntry,
     @Param('entryId') entryId: number,

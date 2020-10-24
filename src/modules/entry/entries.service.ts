@@ -7,16 +7,15 @@ import { IComment } from '../comment/interfaces/comment.interface';
 @Injectable()
 export class EntriesService {
   constructor(
-    // @InjectModel('Entry') private readonly entryModel: Model<IEntry>,
-    // @InjectModel('Comment') private readonly commentModel: Model<IComment>,
+    @InjectModel('Entry') private readonly entryModel: Model<IEntry>,
+    @InjectModel('Comment') private readonly commentModel: Model<IComment>,
   ) {
   }
 
   findAll() {
-    // return this.entryModel.find().exec();
+    return this.entryModel.find().exec();
   }
 
-/*
   // retrieve one entry by entry ID,
   // including its related documents with the "comments" reference
   findById(id: string) {
@@ -44,5 +43,4 @@ export class EntriesService {
 
     return { success: true };
   }
-*/
 }
