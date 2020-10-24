@@ -21,7 +21,7 @@ describe('EntriesController', () => {
 
   describe('findAll', () => {
     it('should return an array of entries', async () => {
-      jest.spyOn(entriesService, 'findAll').mockImplementationOnce(() => [{}]);
+      // jest.spyOn(entriesService, 'findAll').mockImplementationOnce(() => [{}]);
       expect(Array.isArray(await
         entriesController.findAll())).toBe(true);
     });
@@ -29,12 +29,14 @@ describe('EntriesController', () => {
     it('should return the entries retrieved from the service', async () => {
       const result = [
         {
+          uuid: '1234567abcdefg',
           title: 'Test title',
-          content: 'This tis the test body and will serve to check whether the controller is properly doing its job or not.',
-          userId: 1234567,
+          body:
+            'This tis the test body and will serve to check ' +
+            'whether the controller is properly doing its job or not.',
         },
       ];
-      jest.spyOn(entriesService, 'findAll').mockImplementationOnce(async () => result);
+      // jest.spyOn(entriesService, 'findAll').mockImplementationOnce(() => result);
 
       expect(await
         entriesController.findAll()).toEqual(result);
